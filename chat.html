@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>  
+    <head>
+      <title> Chat Program </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <!-- <link rel="stylesheet" href="style.css" /> -->
+      <link  rel="stylesheet" href="./templates/style.css" type="text/css" media="all" />
+      <script  type="text/javascript"  src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        
+
+    </head>
+    <body>
+        <h1> Enter Chat below: </h1>
+        <h5 id="username">Logged in as User:</h5>
+        <form>
+            <input id="message" type="text" placeholder="message">
+            <button type="submit" value="Send" style="height:40px;width:200px">Send</button>
+        </form>
+    <div id="ciao" >
+        <ul id="thread"></ul>
+    </div>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/client.js"></script> 
+        <script src="/router/router.js"></script>
+    </body>
+ </html>  
