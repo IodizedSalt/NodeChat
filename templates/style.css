@@ -31,6 +31,10 @@ body {
     font-family: 'Jura', sans-serif;
     background:#0a4981;
 }
+.chatSkin{
+    background-image: url("blue.png");
+    font-family: "Courier New"; font-size: 20px;
+}
 h1 {
     color: #fff;
     text-align: center;

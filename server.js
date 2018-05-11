@@ -5,6 +5,7 @@ var io = require('socket.io')(server);
 
 app.get('/', function(req, res, next) {
     // res.sendFile(__dirname + './templates/chat.html'); //????
+    // res.render("chat.html");
     res.sendFile("/chat.html");
 });
 

@@ -42,7 +42,7 @@ UserSchema.statics.authenticate = function (email, password, callback) {
       }
       bcrypt.compare(password, user.password, function (err, result) {
         if (result === true) {
-          var username = User.findOne({username:username})
+          var username = User.findOne({username:username})          
           //   request.post({
           //     headers:{"Username": username},
           //     url: "http://localhost:3000/profile",

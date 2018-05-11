@@ -1,3 +1,12 @@
+// var express = require('express');
+// var app = express();
+// var bodyParser = require('body-parser');
+// var mongoose = require('mongoose');
+// var session = require('express-session');
+// var MongoStore = require('connect-mongo')(session);
+// var server = require('http').createServer(app);
+// var io = require('socket.io')(server);
+
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
@@ -6,6 +15,12 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
+var MongoClient = require('mongodb').MongoClient;
+var url = 'mongodb://localhost:27017/mydb';
+//connect to MongoDB
+mongoose.connect('mongodb://localhost/testForAuth');
+var db = mongoose.connection;
+
 
 //connect to MongoDB
 mongoose.connect('mongodb://localhost/testForAuth');
@@ -19,6 +34,7 @@ db.once('open', function () {
 
 //use sessions for tracking logins
 app.use(session({
+  cookieName: 'session',
   secret: 'work hard',
   resave: true,
   saveUninitialized: false,
@@ -58,21 +74,46 @@ app.use(function (err, req, res, next) {
   res.send(err.message);
 });
 
-io.on('connection', function(client) {
-  console.log('Client connected...');
+MongoClient.connect(url, function (err, db) {
+  if (err) throw err;
+  var dbo = db.db("mydb");
+  var currentCollection = dbo.collection("messages");
+  var timestampCollection = dbo.collection("timestamps")
+  io.on("connection", function (socket) {
+    console.log('a user connected');
   
-
-  client.on('join', function(data) {
-    // client.emit('username', data)
-      console.log(data);
+    currentCollection.find().toArray().then(function(docs){
+      socket.emit("chatHistory", docs);
+    })
+  
+    var people = {};
+  
+  
+    socket.on("message", function (message) {
+      console.log("message: " + message);
+      console.log("Inserted a message in a collection");
+      currentCollection.insertOne({
+        text: message
+        //username: "here will be username"
+      }, function (err, res) {
+        if (err) throw err;
+        console.log("1 document inserted");
+      });
+      var timestamp = new Date();
+      timestampCollection.insertOne({
+        text: timestamp
+      }, function (err, res) {
+        if (err) throw err;
+        console.log("1 document inserted");
+      });
+      console.log("Inserted a timestamp in a timestampCollection");
+  
+      socket.broadcast.emit("message", message);
+    })
   });
-
-  client.on('messages', function(data){
-      client.emit('thread', data);
-      client.broadcast.emit('thread', data);
+  
+  
   });
-});
-
 
 // listen on port 3000
 server.listen(3000, function () {

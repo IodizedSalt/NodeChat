@@ -41,7 +41,7 @@ router.post('/', function (req, res, next) {
       } else {
         req.session.userId = user._id;
         return res.redirect('/profile');
-        res.render('profile', {username: req.userData.username}); //*** */
+        // res.render('profile', {username: req.userData.username}); //*** */
       }
     });
 
@@ -53,6 +53,7 @@ router.post('/', function (req, res, next) {
         return next(err);
       } else {
         req.session.userId = user._id;
+        // res.render("/profile", {username: req.user});
         return res.redirect('/profile');
       }
     });
