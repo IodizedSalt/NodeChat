@@ -3,12 +3,7 @@ var router = express.Router();
 var User = require('../user');
 var jQuery = require("jquery");
 
-// GET route for reading data
-// router.get('/', function (req, res, next) {
-//   return res.sendFile(path.join(__dirname + '/templateLogReg/index.html'));
-// });
 router.get('/', function (req, res, next) {
-  // return res.sendFile(path.join(__dirname + '/templates'));
   return res.sendFile("../chat.html");
 });
 
@@ -41,7 +36,6 @@ router.post('/', function (req, res, next) {
       } else {
         req.session.userId = user._id;
         return res.redirect('/profile');
-        // res.render('profile', {username: req.userData.username}); //*** */
       }
     });
 
@@ -53,7 +47,6 @@ router.post('/', function (req, res, next) {
         return next(err);
       } else {
         req.session.userId = user._id;
-        // res.render("/profile", {username: req.user});
         return res.redirect('/profile');
       }
     });
@@ -64,7 +57,6 @@ router.post('/', function (req, res, next) {
   }
 })
 
-// GET route after registering
 router.get('/profile', function (req, res, next) {
   User.findById(req.session.userId)
     .exec(function (error, user) {
@@ -76,17 +68,13 @@ router.get('/profile', function (req, res, next) {
           err.status = 400;
           return next(err);
         } else {
-          // res.sendFile('chat.html', { root: "./templates" });
           res.sendFile('chat.html', {root: "./"});
-          // $(document).ready(function(){
-          //     $("#username").append(user.username);
-          // });            
+                    
         }
       }
     });
 });
 
-// GET for logout logout
 router.get('/logout', function (req, res, next) {
   if (req.session) {
     // delete session object

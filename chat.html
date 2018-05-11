@@ -15,7 +15,7 @@
     <div class="container">
        <div class="col-md-8 push-md-2">
         <a href="http://localhost:3000/logout" class="btn btn-danger" style="float: right;" role="button">Logout</a>   
-        <h2>Messenger Chatroom</h2>
+        <h2 style="font-weight: bold">Messenger Chatroom</h2>
     
         <h4>Username: <span class="label label-success current-username"></span></h4>
         <p>
@@ -60,14 +60,12 @@
     });
 
     socket.on("message", function(message){
-        //chatUsername = this.chatUsername;
         messagesList.append("<ul>" +message+"</ul>");
     });
 
     socket.on("chatHistory", function(data){
         messagesList.find("ul").remove();
         $.each(data, function(){
-            //messagesList.append("<li>"+this.username +": "+ this.text+"</li>"); 
             messagesList.append("<ul>"+ this.text+"</ul>");            
                        
         })
@@ -78,7 +76,7 @@
             chatUsername = Cookies.get("node_chat_username");
         
         }else{
-            chatUsername = 'Anonymous'+(new Date()).getTime();
+            chatUsername = 'User'+(new Date()).getTime();
         }
         Cookies.get("node_chat_username", chatUsername);
         chatUsernameIndicator.text(chatUsername);
@@ -95,84 +93,3 @@
 <script src="/socket.io/socket.io.js"></script>
 </body>
 </html>
-
-
-
-<!-- <!DOCTYPE html>
-<html>  
-    <head>
-      <title> Chat Program </title>
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-       <link rel="stylesheet" href="style.css" />
-      <link  rel="stylesheet" href="./templates/style.css" type="text/css" media="all" />
-      <script  type="text/javascript"  src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-
-    </head>
-    <body>
-        <h1> Enter Chat below: </h1>
-        <h5 id="username">Logged in as User:</h5>
-        <form>
-            <input id="message" type="text" placeholder="message">
-            <button type="submit" value="Send" style="height:40px;width:200px">Send</button>
-        </form>
-    <div id="ciao" >
-        <ul id="thread"></ul>
-    </div>
-
-    <script>
-        $(document).ready(function(){
-           var socket = io(),
-               chatForm = $('.chat-form'),
-               messageField = chatForm.find("#message-field"),
-               messagesList = $(".messages-list");
-               chatUsername = $(".current-username"),
-               chatUsernameIndicator = $(".current-username"),
-               usernameSubmit = $(".username-submit"),
-               usernameField = $(".username");
-       
-           chatForm.on("submit", function(e){
-               e.preventDefault();
-               var message = usernameField.val() +": "+ messageField.val();
-               messagesList.append("<li>"+message+"</li>");
-               socket.emit("message", message);
-           });
-       
-           socket.on("message", function(message){
-               //chatUsername = this.chatUsername;
-               messagesList.append("<li>" +message+"</li>");
-           });
-       
-           socket.on("chatHistory", function(data){
-               messagesList.find("li").remove();
-               $.each(data, function(){
-                   //messagesList.append("<li>"+this.username +": "+ this.text+"</li>"); 
-                   messagesList.append("<li>"+ this.text+"</li>");            
-                              
-               })
-           });
-       
-           socket.on("connect", function(){
-               if(Cookies.get("node_chat_username")){
-                   chatUsername = Cookies.get("node_chat_username");
-               
-               }else{
-                   chatUsername = 'Anonymous'+(new Date()).getTime();
-               }
-               Cookies.get("node_chat_username", chatUsername);
-               chatUsernameIndicator.text(chatUsername);
-               if(!usernameField.val() === ""){
-       
-               }
-           });
-       
-           usernameSubmit.on("click", function(){
-               Cookies.get("node_chat_username", usernameField.val());
-               chatUsernameIndicator.text(usernameField.val());
-           })
-           });
-        </script>
-        <script src="/socket.io/socket.io.js"></script>
-        <script src="/client.js"></script> 
-        <script src="/router/router.js"></script>
-    </body>
- </html>   -->
