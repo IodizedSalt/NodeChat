@@ -43,19 +43,6 @@ UserSchema.statics.authenticate = function (email, password, callback) {
       bcrypt.compare(password, user.password, function (err, result) {
         if (result === true) {
           var username = User.findOne({username:username})          
-          //   request.post({
-          //     headers:{"Username": username},
-          //     url: "http://localhost:3000/profile",
-          //     method: "POST"
-          //     },
-          //     function (err, response, body) {
-          //       if(err||response.statusCode !=200)
-          //       {
-          //         console.log(err);
-          //       }else{
-          //         console.log("success");
-          //       }
-          // });
           return callback(null, user);
         } else {
           return callback();
