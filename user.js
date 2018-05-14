@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 var http = require('http'),
     fs = require('fs');
-var $ = require('jQuery');
 var request = require('request');
 var UserSchema = new mongoose.Schema({
 

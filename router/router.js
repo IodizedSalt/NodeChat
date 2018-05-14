@@ -64,7 +64,7 @@ router.get('/profile', function (req, res, next) {
         return next(error);
       } else {
         if (user === null) {
-          var err = new Error('Not authorized! Go back!');
+          var err = new Error('Unauthorized access, go back and retry sign in');
           err.status = 400;
           return next(err);
         } else {
@@ -77,7 +77,6 @@ router.get('/profile', function (req, res, next) {
 
 router.get('/logout', function (req, res, next) {
   if (req.session) {
-    // delete session object
     req.session.destroy(function (err) {
       if (err) {
         return next(err);

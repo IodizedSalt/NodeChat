@@ -9,7 +9,6 @@ app.get('/', function(req, res, next) {
 
 app.use(express.static('/templates'));
 
-
 io.on('connection', function(client) {
     console.log('Client connected...');
 

@@ -1,12 +1,3 @@
-// var express = require('express');
-// var app = express();
-// var bodyParser = require('body-parser');
-// var mongoose = require('mongoose');
-// var session = require('express-session');
-// var MongoStore = require('connect-mongo')(session);
-// var server = require('http').createServer(app);
-// var io = require('socket.io')(server);
-
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
@@ -21,15 +12,11 @@ var url = 'mongodb://localhost:27017/mydb';
 mongoose.connect('mongodb://localhost/testForAuth');
 var db = mongoose.connection;
 
-
-//connect to MongoDB
 mongoose.connect('mongodb://localhost/testForAuth');
 var db = mongoose.connection;
 
-//handle mongo error
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
-  // we're connected!
 });
 
 //use sessions for tracking logins
@@ -42,10 +29,6 @@ app.use(session({
     mongooseConnection: db
   })
 }));
-// app.get('/user', function(req, res){
-
-//   res.render('index', {username: req.username})
-// });
 
 // parse incoming requests
 app.use(bodyParser.json());
