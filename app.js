@@ -1,17 +1,18 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true}))
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
 var mongoose = require('mongoose');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var MongoClient = require('mongodb').MongoClient;
+var Post = require("./post");
 var url = 'mongodb://localhost:27017/mydb';
-//connect to MongoDB
-mongoose.connect('mongodb://localhost/testForAuth');
-var db = mongoose.connection;
-
 mongoose.connect('mongodb://localhost/testForAuth');
 var db = mongoose.connection;
 
@@ -34,6 +35,22 @@ app.use(session({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.get("/blog", (req, res) => {
+  Post.find({}, (err, posts) => {
+     res.render('blog.html', { posts: posts})
+  });
+});
+app.post('/addpost', (req, res) => {
+   var postData = new Post(req.body);
+   postData.save().then( result => {
+       res.redirect('/blog');
+       console.log("BlogPost saved to db");
+   }).catch(err => {
+       console.log("Error saving to db");
+       res.status(400).send("Unable to save data");
+   });
+  
+});
 
 // serve static files from templates
 // app.use(express.static(__dirname + '/templates'));
@@ -70,14 +87,12 @@ MongoClient.connect(url, function (err, db) {
     })
   
     var people = {};
-  
-  
+
     socket.on("message", function (message) {
       console.log("message: " + message);
-      console.log("Inserted a message in a collection");
+      console.log("message saved to db");
       currentCollection.insertOne({
         text: message
-        //username: "here will be username"
       }, function (err, res) {
         if (err) throw err;
         console.log("1 document inserted");
@@ -87,10 +102,8 @@ MongoClient.connect(url, function (err, db) {
         text: timestamp
       }, function (err, res) {
         if (err) throw err;
-        console.log("1 document inserted");
       });
-      console.log("Inserted a timestamp in a timestampCollection");
-  
+      console.log("Inserted a timestamp into the database");
       socket.broadcast.emit("message", message);
     })
   });

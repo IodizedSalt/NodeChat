@@ -15,7 +15,6 @@ io.on('connection', function(client) {
     client.on('join', function(data) {
         console.log(data);
     });
-
     client.on('messages', function(data, userData){
         client.emit('thread', data, userData);
         client.broadcast.emit('thread', data);

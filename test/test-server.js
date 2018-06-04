@@ -1,10 +1,8 @@
-var chai = require('chai');
-var chaiHttp = require('chai-http');
-var server = require('../app');
-var expect = chai.expect();
-var assert = require('assert'),
 http = require('http');
-chai.use(chaiHttp);
+
+const chai = require("chai");
+const assert = chai.assert;
+
 
 describe('/', function () {
   it('should return 200', function (done) {
@@ -13,5 +11,6 @@ describe('/', function () {
       done();
     });
   });
+
   
 });
